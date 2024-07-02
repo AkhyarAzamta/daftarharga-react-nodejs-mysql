@@ -70,7 +70,7 @@ const TableComponent = ({ refreshData, onRefresh }) => {
   return (
     <div className="relative p-4">
       <p className="text-center">Daftar Harga Azam Cell</p>
-      <div className="flex my-4">
+      <div className="flex m-4">
         <input
           type="text"
           placeholder="Cari"
