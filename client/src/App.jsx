@@ -1,20 +1,16 @@
 import { useState } from 'react';
 import TableComponent from './components/TableComponent';
-import SearchBar from './components/SearchBar';
 
 function App() {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [refreshData, setRefreshData] = useState(false);
 
-  const handleSearch = (event) => {
-    setSearchTerm(event.target.value);
+  const handleRefresh = () => {
+    setRefreshData(!refreshData);
   };
 
   return (
     <>
-      <div className="p-4">
-        <SearchBar searchTerm={searchTerm} onSearch={handleSearch} />
-        <TableComponent searchTerm={searchTerm} />
-      </div>
+      <TableComponent refreshData={refreshData} onRefresh={handleRefresh} />
     </>
   );
 }

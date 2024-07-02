@@ -9,7 +9,7 @@ const PORT = 3000;
 
 // Middleware CORS untuk mengizinkan permintaan dari localhost:5173
 app.use(cors({
-  origin: 'https://azamcell.akhyarazamta.my.id/',
+  origin: 'http://localhost:5173',
 }));
 
 // Database configuration
