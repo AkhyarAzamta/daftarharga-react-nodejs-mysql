@@ -9,7 +9,7 @@ const PORT = 3000;
 
 // Middleware CORS untuk mengizinkan permintaan dari localhost:5173
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: 'https://azamcell.akhyarazamta.my.id/',
 }));
 
 // Database configuration
@@ -47,10 +47,13 @@ async function fetchDataAndSave() {
       table.find('tr.td1, tr.td2').each((j, row) => {
         const kode = $(row).find('td').eq(0).text().trim();
         const keterangan = $(row).find('td').eq(1).text().trim();
-        const harga = $(row).find('td').eq(2).text().trim();
+        let harga = $(row).find('td').eq(2).text().trim().replace(/\./g, ''); // Remove thousand separators
         const status = $(row).find('td').eq(3).text().trim();
 
-        if (kode && keterangan && harga && status) {
+        // Convert harga to number
+        harga = parseFloat(harga);
+
+        if (kode && keterangan && !isNaN(harga) && status) {
           data.push([kode, keterangan, harga, status]);
         }
       });
@@ -58,11 +61,11 @@ async function fetchDataAndSave() {
       // Create table if not exists with sanitized table name
       const sanitizedTableName = tableName.replace(/[^a-zA-Z0-9$_]/g, '_'); // Sanitize table name
       await connection.query(`CREATE TABLE IF NOT EXISTS ${sanitizedTableName} (
-    kode VARCHAR(255) PRIMARY KEY,
-    keterangan VARCHAR(255),
-    harga INT(11),
-    status VARCHAR(255)
-  )`);
+        kode VARCHAR(255) PRIMARY KEY,
+        keterangan VARCHAR(255),
+        harga INT(11),
+        status VARCHAR(255)
+      )`);
 
       // Insert data into the table
       const sql = `INSERT INTO ${sanitizedTableName} (kode, keterangan, harga, status) VALUES ? 
@@ -70,7 +73,6 @@ async function fetchDataAndSave() {
       await connection.query(sql, [data]);
       console.log(`Inserted/updated data into table ${sanitizedTableName}`);
     }
-
 
     console.log('Database connection closed');
     return { success: true };
