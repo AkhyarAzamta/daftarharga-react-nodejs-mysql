@@ -5,6 +5,7 @@ import axios from 'axios';
 const TableComponent = ({ refreshData, onRefresh }) => {
   const [tablesData, setTablesData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -36,8 +37,6 @@ const TableComponent = ({ refreshData, onRefresh }) => {
           }))
           .filter((table) => !table.rows.some((row) => row.keterangan.toLowerCase().includes('pulsa')));
 
-        // console.log(modifiedData); // Log data yang dimodifikasi
-
         setTablesData(modifiedData);
       } else {
         console.error('Gagal mengambil data:', response.data.error);
@@ -48,8 +47,8 @@ const TableComponent = ({ refreshData, onRefresh }) => {
     setLoading(false);
   };
 
-  const handleSearch = (event) => {
-    setSearchTerm(event.target.value);
+  const handleSearch = () => {
+    setSearchQuery(searchTerm);
   };
 
   const handleManualRefresh = async () => {
@@ -64,56 +63,68 @@ const TableComponent = ({ refreshData, onRefresh }) => {
   };
 
   const filteredData = tablesData.filter((table) =>
-    table.tableName.toLowerCase().includes(searchTerm.toLowerCase())
+    table.tableName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    table.rows.some((row) => row.keterangan.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
   return (
     <div className="relative p-4">
-      <div className="flex mb-4">
+      <p className="text-center">Daftar Harga Azam Cell</p>
+      <div className="flex my-4">
         <input
           type="text"
           placeholder="Cari"
           value={searchTerm}
-          onChange={handleSearch}
+          onChange={(e) => setSearchTerm(e.target.value)}
           className="flex-grow px-4 py-2 border border-gray-300 rounded-md"
         />
+        <button
+          onClick={handleSearch}
+          className="ml-2 px-4 py-2 bg-blue-500 text-white rounded-md"
+        >
+          Cari
+        </button>
       </div>
       {loading ? (
         <div className="text-center">Loading...</div>
       ) : (
-        filteredData.map((table, index) => (
-          <div key={index} className="mb-6">
-            <h2 className="text-2xl text-center font-bold mb-4">{table.tableName}</h2>
-            <div className="overflow-x-auto">
-              <table className="min-w-full bg-white border border-gray-400 divide-y divide-gray-200">
-                <thead className="bg-sky-200">
-                  <tr>
-                    <th className="px-4 py-2 text-left">Kode</th>
-                    <th className="px-4 py-2 text-left">Keterangan</th>
-                    <th className="px-4 py-2 text-left">Harga</th>
-                    <th className="px-4 py-2 text-left">Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {table.rows.length > 0 ? (
-                    table.rows.map((row, rowIndex) => (
-                      <tr key={rowIndex} className={rowIndex % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
-                        <td className="px-4 py-2">{row.kode}</td>
-                        <td className="px-4 py-2 whitespace-nowrap">{row.keterangan}</td>
-                        <td className="px-4 py-2">{row.harga}</td>
-                        <td className="px-4 py-2">{row.status}</td>
-                      </tr>
-                    ))
-                  ) : (
+        filteredData.length > 0 ? (
+          filteredData.map((table, index) => (
+            <div key={index} className="mb-6">
+              <h2 className="text-2xl text-center bg-sky-600 text-white font-bold">{table.tableName}</h2>
+              <div className="overflow-x-auto">
+                <table className="min-w-full bg-white border border-gray-400 divide-y divide-gray-200">
+                  <thead className="bg-sky-500 text-white">
                     <tr>
-                      <td colSpan="4" className="text-center px-4 py-2">No results found</td>
+                      <th className="px-4 border-green-700 border py-2 text-left">Kode</th>
+                      <th className="px-4 border-green-700 border py-2 text-left">Keterangan</th>
+                      <th className="px-4 border-green-700 border py-2 text-left">Harga</th>
+                      <th className="px-4 border-green-700 border py-2 text-left">Status</th>
                     </tr>
-                  )}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {table.rows.length > 0 ? (
+                      table.rows.map((row, rowIndex) => (
+                        <tr key={rowIndex} className={rowIndex % 2 === 0 ? 'bg-sky-200' : 'bg-white'}>
+                          <td className="px-4 border-green-700 border py-2">{row.kode}</td>
+                          <td className="px-4 border-green-700 border py-2 whitespace-nowrap">{row.keterangan}</td>
+                          <td className="px-4 border-green-700 border py-2">{row.harga}</td>
+                          <td className="px-4 border-green-700 border py-2">{row.status}</td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan="4" className="text-center px-4 py-2">No results found</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
             </div>
-          </div>
-        ))
+          ))
+        ) : (
+          <div className="text-center">Produk Tidak Tersedia Atau Coba Gunakan Kata Kunci Lain</div>
+        )
       )}
       <button
         onClick={handleManualRefresh}
