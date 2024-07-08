@@ -64,7 +64,7 @@ const TableComponent = ({ refreshData, onRefresh }) => {
 
   const filteredData = tablesData.filter((table) =>
     table.tableName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    table.rows.some((row) => row.keterangan.toLowerCase().includes(searchQuery.toLowerCase()))
+    table.rows.some((row) => row.keterangan.toLowerCase().includes(searchQuery.toLowerCase()) || row.kode.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
   return (
