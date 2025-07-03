@@ -1,13 +1,10 @@
-import { fetchDataAndSave } from "../services/scrape.service.js";
+import { fetchDataAndSave } from '../services/scrape.service.js';
 
-export const fetchAndSaveData = async (req, res) => {
+export const scrapeData = async (req, res) => {
   try {
     const result = await fetchDataAndSave();
     res.json(result);
-  } catch (error) {
-    res.status(500).json({ 
-      success: false, 
-      error: error.message 
-    });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
   }
 };

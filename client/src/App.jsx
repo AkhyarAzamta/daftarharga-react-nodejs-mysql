@@ -1,18 +1,13 @@
+// src/App.jsx
 import { useState } from 'react';
-import TableComponent from './components/TableComponent';
+import TableView from './components/TableView';
 
-function App() {
-  const [refreshData, setRefreshData] = useState(false);
-
-  const handleRefresh = () => {
-    setRefreshData(!refreshData);
-  };
-
+export default function App() {
+  const [refreshToggle, setRefreshToggle] = useState(false);
   return (
-    <>
-      <TableComponent refreshData={refreshData} onRefresh={handleRefresh} />
-    </>
+    <TableView
+      onRefreshToggle={() => setRefreshToggle(ft => !ft)}
+      key={+refreshToggle} // agar useEffect dipicu
+    />
   );
 }
-
-export default App;

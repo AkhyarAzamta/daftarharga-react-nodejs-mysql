@@ -3,22 +3,24 @@
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
-"scripts": {
-  "start": "node --no-warnings=ExperimentalWarning index.js",
-  "dev": "nodemon --exec node --no-warnings=ExperimentalWarning index.js",
-  "prisma:generate": "prisma generate",
-  "prisma:migrate": "prisma migrate dev",
-  "prisma:studio": "prisma studio",
-  "postinstall": "prisma generate"
-},
-"dependencies": {
-  "@prisma/client": "^5.0.0",
-  "axios": "^1.6.2",
-  "cheerio": "^1.0.0-rc.12",
-  "cors": "^2.8.5",
-  "dotenv": "^16.3.1",
-  "express": "^4.18.2"
-},
+  "scripts": {
+    "start": "node --no-warnings=ExperimentalWarning index.js",
+    "dev": "nodemon --exec node --no-warnings=ExperimentalWarning index.js",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:studio": "prisma studio",
+    "postinstall": "prisma generate"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.0.0",
+    "axios": "^1.6.2",
+    "cheerio": "^1.0.0-rc.12",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "exceljs": "^4.4.0",
+    "express": "^4.18.2",
+    "json2csv": "^6.0.0-alpha.2"
+  },
   "devDependencies": {
     "nodemon": "^3.0.2",
     "prisma": "^5.22.0"
