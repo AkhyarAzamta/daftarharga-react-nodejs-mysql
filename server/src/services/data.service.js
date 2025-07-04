@@ -33,10 +33,10 @@ export const fetchData = async ({
   if (search) {
     const q = search.toLowerCase();
     where.OR = [
-      { provider: { contains: q } },
-      { category: { contains: q } },
-      { kode: { contains: q } },
-      { keterangan: { contains: q } },
+      { provider: { contains: q, mode: 'insensitive' } },
+      { category: { contains: q, mode: 'insensitive' } },
+      { kode: { contains: q, mode: 'insensitive' } },
+      { keterangan: { contains: q, mode: 'insensitive' } },
     ];
   }
 

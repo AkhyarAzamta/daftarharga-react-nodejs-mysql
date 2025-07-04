@@ -8,11 +8,9 @@ dotenv.config();
 const app = express();
 
 // Middleware
-app.use(cors({
-  origin: process.env.CORS_ORIGIN || '*',
-  methods: ['GET', 'POST']
-}));
-
+app.use(
+  cors({ origin: process.env.CORS_ORIGIN || '*', methods: ['GET', 'POST'] })
+);
 app.use(express.json());
 
 // Routes
@@ -26,10 +24,7 @@ app.get('/health', (req, res) => {
 // Error handling
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).json({
-    success: false,
-    error: 'Internal Server Error'
-  });
+  res.status(500).json({ success: false, error: 'Internal Server Error' });
 });
 
 export default app;
