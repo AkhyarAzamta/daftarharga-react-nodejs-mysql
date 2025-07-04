@@ -11,6 +11,7 @@ export default function TableView({ onRefreshToggle }) {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalItems, setTotalItems] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   const fetchData = useCallback(async () => {
     setLoading(true);
@@ -21,7 +22,7 @@ export default function TableView({ onRefreshToggle }) {
         groupBy: 'provider',
         search: searchTerm
       };
-      const { data: res } = await axios.get('http://localhost:3000/api/data', { params });
+      const { data: res } = await axios.get(`${API_BASE_URL}/data`, { params });
       if (!res.success) throw new Error(res.error);
       const arr = Object.entries(res.data).map(([tableName, rows]) => ({ tableName, rows }));
       setTables(arr);
@@ -31,7 +32,7 @@ export default function TableView({ onRefreshToggle }) {
       console.error('Fetch data failed:', err);
     }
     setLoading(false);
-  }, [page, rowsPerPage, searchTerm]);
+  }, [page, rowsPerPage, searchTerm, API_BASE_URL]);
 
   useEffect(() => {
     fetchData();
@@ -41,7 +42,7 @@ export default function TableView({ onRefreshToggle }) {
   const handleManualRefresh = async () => {
     setLoading(true);
     try {
-      await axios.post('http://localhost:3000/api/scrape');
+      await axios.post(`${API_BASE_URL}/scrape`);
       onRefreshToggle();
     } catch (err) {
       console.error('Manual refresh failed:', err);
@@ -100,7 +101,7 @@ export default function TableView({ onRefreshToggle }) {
                 <button
                   onClick={() => {
                     if (confirm('Apakah Anda yakin ingin mengunduh data CSV?')) {
-                      window.location.href = 'http://localhost:3000/api/export/csv';
+                      window.location.href = `${API_BASE_URL}/export/csv`;
                     }
                   }}
                   className="px-4 py-2 bg-gray-800 text-white rounded"
@@ -111,7 +112,7 @@ export default function TableView({ onRefreshToggle }) {
                 <button
                   onClick={() => {
                     if (confirm('Apakah Anda yakin ingin mengunduh data XLSX?')) {
-                      window.location.href = 'http://localhost:3000/api/export/xlsx';
+                      window.location.href = `${API_BASE_URL}/export/xlsx`;
                     }
                   }}
                   className="px-4 py-2 bg-gray-800 text-white rounded"
