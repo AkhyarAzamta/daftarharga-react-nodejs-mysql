@@ -70,12 +70,12 @@ export default function TableView({ onRefreshToggle }) {
 
   return (
     <div className="h-screen overflow-y-auto bg-white">
-      <div className="px-4">
+      <div className="px-2">
         {/* Sticky Global Header */}
         <div className="sticky top-0 z-30 bg-white border-b shadow-md pt-4 pb-2 transition-shadow duration-300">
           <h1 className="text-2xl font-bold text-center mb-4">Daftar Harga AzamCell</h1>
 
-          <div className="flex gap-4 mb-4 flex-wrap px-4">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4 px-4">
             <input
               type="text"
               placeholder="Cari provider, category, kode atau keterangan…"
@@ -84,7 +84,7 @@ export default function TableView({ onRefreshToggle }) {
               className="flex-grow px-4 py-2 border rounded"
             />
             {typeof window !== 'undefined' && window.location.pathname.startsWith('/admin') && (
-              <>
+              <div className="flex flex-col sm:flex-row gap-2">
                 <button
                   onClick={handleManualRefresh}
                   disabled={loading}
@@ -112,16 +112,15 @@ export default function TableView({ onRefreshToggle }) {
                 >
                   Download XLSX
                 </button>
-              </>
+              </div>
             )}
           </div>
 
           {/* Pagination */}
-          <div className="flex px-4 items-center justify-between">
-            <span className="text-sm">0 of {totalItems} row(s) selected.</span>
-
-            <div className="flex items-center space-x-2">
-              <label className="text-sm">
+          <div className="flex flex-col md:flex-row md:items-center justify-around gap-2">
+            <span className="text-sm px-3">0 of {totalItems} row(s) selected.</span>
+            <div className="flex flex-wrap md:gap-2 justify-content-center items-center ">
+              <label className="text-sm px-2">
                 Rows per page:
                 <select
                   value={rowsPerPage}
@@ -133,12 +132,9 @@ export default function TableView({ onRefreshToggle }) {
                   ))}
                 </select>
               </label>
-
               <button onClick={goToFirst} disabled={page === 1} className="px-2 py-1 border rounded disabled:opacity-50">«</button>
               <button onClick={goToPrev} disabled={page === 1} className="px-2 py-1 border rounded disabled:opacity-50">‹</button>
-
               <span className="text-sm">Page {page} of {totalPages}</span>
-
               <button onClick={goToNext} disabled={page === totalPages} className="px-2 py-1 border rounded disabled:opacity-50">›</button>
               <button onClick={goToLast} disabled={page === totalPages} className="px-2 py-1 border rounded disabled:opacity-50">»</button>
             </div>
@@ -155,7 +151,7 @@ export default function TableView({ onRefreshToggle }) {
                 <div key={table.tableName} className="mb-8">
                   {/* Sticky Section Title */}
                   <h2
-                    className="sticky top-[160px] z-20 text-xl font-semibold bg-sky-600 text-center text-white p-2 shadow transition-all duration-300"
+                    className="sticky md:top-[165px] top-[193px] z-20 text-xl font-semibold bg-sky-600 text-center text-white p-2 shadow transition-all duration-300"
                   >
                     {table.tableName.replace(/_/g, ' ')}
                   </h2>
